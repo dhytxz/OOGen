@@ -3,33 +3,52 @@ package OOGen;
 import java.util.*;
 
 public class AXIBus implements Bus {
-    /*IPModule Begin*/
-    private static int count = 0;
+    /*IPModlue Implementation*/
     private static final String IPName = "axi_interconnection";
-    private String name;
-    private int id;
-    /*IPModule End*/
+    private static final Version ver = new Version(9, 4);
+    private static int numsOfInstances = 0;
+    private String instanceName;
+    private int instanceID;
+    public String getIPName() {
+        return this.IPName;
+    }
+    public String getName() {
+        return this.instanceName;
+    }
+    public int getID() {
+        return this.instanceID;
+    }
+    public String getVersion() {
+        return this.ver.getVersion();
+    }
+    public boolean isSameIPType(IPModule module) {
+        return getIPName().equals(module.getIPName());
+    }
+    public void setName(String name) {
+        this.instanceName = name;
+    }
+    public void setID(int id) {
+        this.instanceID = id;
+    }
+    /*IPModlue Implementation*/
 
     private int numsOfMaster;
     private int numsOfSlave;
     private List<IPModule> contents;
+    private void incNumsOfInstance() {
+        this.numsOfInstances++;
+    }
+    private int getNumsOfInstance() {
+        return this.numsOfInstances;
+    }
     public AXIBus() {
-        id = count;
-        name = IPName + '_' + id;
-        count++;
+        setID(getNumsOfInstance());
+        setName(getIPName() + '_' + getID());
+        incNumsOfInstance();
         contents = new ArrayList<IPModule>();
         this.numsOfMaster = 0;
         this.numsOfSlave = 0;
     }
-    public String getIPName() {
-        return IPName;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public int getID() {
-        return this.id;
-    }    
     public void setNumsOfMaster(int numsOfMaster) {
         this.numsOfMaster = numsOfMaster;
     }
