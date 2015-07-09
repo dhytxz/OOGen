@@ -3,8 +3,14 @@ import OOGen.*;
 
 public class test {
     public static void main(String[] args) {
-        Bus axi = new AXIBus();
-        axi.setNumsOfMaster(1);
-        System.out.println(axi.getNumsOfMaster());
+        Bus global = new AXIBus();
+        for (int i = 0; i < 10; i++) {
+            global.add(new MicroBlaze());
+        }
+        Processor mb = new MicroBlaze();
+        global.add(mb);
+        for (IPModule module : global.getContents()) {
+            System.out.println(module.getName());
+        }
     }
 }
