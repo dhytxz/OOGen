@@ -11,3 +11,29 @@ int main {
     }
     cleanUp(); 
 }
+
+int main {
+    unsigned int HostAddr = (int *)hostMalloc(Size);
+    unsigned int KernelAddr = (int *)kernelMalloc(Size);
+    //Allocate memory space on PS and PL DDR.
+    DMAEnqueue(HostAddr, KernelAddr, size, dir);
+    //Put DMA cammands on queue.
+    regThreads(PID, AppType);
+    setArgs(LocalSize, GroupSize);
+    //Register thread on hardware manager.
+    DMASleep();
+    //Wait for DMA queue clear.
+    while (!isFinished()) {
+        schedulerSleep();
+        //Wait for interrupts from hardware scheduler.
+        if (isFinished())
+            break;
+        doPR(AvaiableSlots);
+    //Program hardware threads on PR regions.
+    }
+    DMAEnqueue(HostAddr, KernelAddr, size, dir);
+    unregThreads(PID);
+    //Clear HTDT on hardware manager.
+    DMASleep();
+    //DMA results back.    
+}
